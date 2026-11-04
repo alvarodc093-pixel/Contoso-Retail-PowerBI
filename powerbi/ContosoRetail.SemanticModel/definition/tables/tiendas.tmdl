@@ -1,0 +1,82 @@
+/// Tiendas físicas más la tienda online.
+table tiendas
+	lineageTag: d7e70ca3-aad3-58f1-81e7-7e1c60bc9974
+
+	column tienda_id
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 23cc95eb-c159-5496-b553-1e5fb56167e3
+		summarizeBy: none
+		sourceColumn: tienda_id
+
+	column tienda
+		dataType: string
+		lineageTag: 29540182-6533-50cd-8c3c-ae2cf2f834f8
+		summarizeBy: none
+		sourceColumn: tienda
+
+	column canal
+		dataType: string
+		lineageTag: 8345f805-4634-534c-8b86-8b5c92dd5961
+		summarizeBy: none
+		sourceColumn: canal
+
+	column pais
+		dataType: string
+		lineageTag: 1f4f69fd-cd59-5b9b-914e-a57ef923d532
+		summarizeBy: none
+		sourceColumn: pais
+
+	column region
+		dataType: string
+		lineageTag: 3be5be25-be9c-513c-acaf-b977e1b5ada5
+		summarizeBy: none
+		sourceColumn: region
+
+	column apertura
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 1d73c3b4-3e1d-5e6b-8221-0edcc9a475f0
+		summarizeBy: none
+		sourceColumn: apertura
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column cierre
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 82a4e0db-8679-5783-88e4-d049500d6512
+		summarizeBy: none
+		sourceColumn: cierre
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column m2
+		dataType: int64
+		formatString: #,0
+		lineageTag: 07371d9a-6d5e-58c0-be1d-9b653a9601c4
+		summarizeBy: sum
+		sourceColumn: m2
+
+	column estado
+		dataType: string
+		lineageTag: 076f20e7-9511-558c-95be-e85e457ae134
+		summarizeBy: none
+		sourceColumn: estado
+
+	partition tiendas = m
+		mode: import
+		source =
+				let
+				    Ruta = OrigenDatos & "tiendas.csv",
+				    Contenido = if Text.StartsWith(Ruta, "http") then Web.Contents(Ruta) else File.Contents(Ruta),
+				    Origen = Csv.Document(Contenido, [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    SinVacios = Table.TransformColumns(Encabezados, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(SinVacios, {{"tienda_id", Int64.Type}, {"tienda", type text}, {"canal", type text}, {"pais", type text}, {"region", type text}, {"apertura", type date}, {"cierre", type date}, {"m2", Int64.Type}, {"estado", type text}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

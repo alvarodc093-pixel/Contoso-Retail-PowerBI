@@ -1,0 +1,44 @@
+/// Presupuesto mensual por categoría (día 1 de cada mes).
+table objetivos
+	lineageTag: 3631e741-f0b5-5a7e-96a7-5cb0cdd58fe3
+
+	column fecha
+		dataType: dateTime
+		isHidden
+		formatString: dd/mm/yyyy
+		lineageTag: 2dc31478-7191-55a0-8f6b-a524fae799df
+		summarizeBy: none
+		sourceColumn: fecha
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column categoria_id
+		dataType: int64
+		isHidden
+		lineageTag: 8eec8a4d-03f0-5d21-ab1e-de77c0f47a76
+		summarizeBy: none
+		sourceColumn: categoria_id
+
+	column objetivo
+		dataType: double
+		isHidden
+		formatString: \$#,0;-\$#,0;\$#,0
+		lineageTag: 4d64d16c-21ed-55a9-b2c8-214715ae210e
+		summarizeBy: none
+		sourceColumn: objetivo
+
+	partition objetivos = m
+		mode: import
+		source =
+				let
+				    Ruta = OrigenDatos & "objetivos.csv",
+				    Contenido = if Text.StartsWith(Ruta, "http") then Web.Contents(Ruta) else File.Contents(Ruta),
+				    Origen = Csv.Document(Contenido, [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    SinVacios = Table.TransformColumns(Encabezados, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(SinVacios, {{"fecha", type date}, {"categoria_id", Int64.Type}, {"objetivo", type number}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

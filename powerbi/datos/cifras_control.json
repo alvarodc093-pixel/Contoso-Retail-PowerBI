@@ -1,0 +1,112 @@
+{
+  "2016": {
+    "ventas": 5678106.37,
+    "coste": 2496209.01,
+    "margen_pct": 0.5604,
+    "pedidos": 2111,
+    "unidades": 15886,
+    "clientes": 2075,
+    "ticket_medio": 2689.77,
+    "pct_online": 0.1505,
+    "objetivo": null
+  },
+  "2017": {
+    "ventas": 10182548.75,
+    "coste": 4471609.33,
+    "margen_pct": 0.5609,
+    "pedidos": 3632,
+    "unidades": 26312,
+    "clientes": 3536,
+    "ticket_medio": 2803.57,
+    "pct_online": 0.1432,
+    "objetivo": 6132800.0
+  },
+  "2018": {
+    "ventas": 13784590.12,
+    "coste": 6097796.82,
+    "margen_pct": 0.5576,
+    "pedidos": 4783,
+    "unidades": 35583,
+    "clientes": 4609,
+    "ticket_medio": 2882.0,
+    "pct_online": 0.1805,
+    "objetivo": 10997300.0
+  },
+  "2019": {
+    "ventas": 25815538.89,
+    "coste": 11407933.38,
+    "margen_pct": 0.5581,
+    "pedidos": 9208,
+    "unidades": 70047,
+    "clientes": 8644,
+    "ticket_medio": 2803.6,
+    "pct_online": 0.1926,
+    "objetivo": 14887600.0
+  },
+  "2020": {
+    "ventas": 17743747.83,
+    "coste": 7849103.26,
+    "margen_pct": 0.5576,
+    "pedidos": 6534,
+    "unidades": 48870,
+    "clientes": 6223,
+    "ticket_medio": 2715.6,
+    "pct_online": 0.2032,
+    "objetivo": 27880900.0
+  },
+  "2021": {
+    "ventas": 16366682.43,
+    "coste": 7197198.75,
+    "margen_pct": 0.5603,
+    "pedidos": 6693,
+    "unidades": 50130,
+    "clientes": 6386,
+    "ticket_medio": 2445.34,
+    "pct_online": 0.2748,
+    "objetivo": 19163200.0
+  },
+  "2022": {
+    "ventas": 24495022.72,
+    "coste": 10789275.51,
+    "margen_pct": 0.5595,
+    "pedidos": 9756,
+    "unidades": 73930,
+    "clientes": 9044,
+    "ticket_medio": 2510.76,
+    "pct_online": 0.3933,
+    "objetivo": 17676200.0
+  },
+  "2023": {
+    "ventas": 43831054.52,
+    "coste": 19342273.05,
+    "margen_pct": 0.5587,
+    "pedidos": 19145,
+    "unidades": 144806,
+    "clientes": 16532,
+    "ticket_medio": 2289.43,
+    "pct_online": 0.5393,
+    "objetivo": 26454800.0
+  },
+  "2024": {
+    "ventas": 31639690.92,
+    "coste": 13942544.08,
+    "margen_pct": 0.5593,
+    "pedidos": 15899,
+    "unidades": 120004,
+    "clientes": 14051,
+    "ticket_medio": 1990.04,
+    "pct_online": 0.6189,
+    "objetivo": 47337000.0
+  },
+  "2025": {
+    "ventas": 29277489.59,
+    "coste": 12888317.23,
+    "margen_pct": 0.5598,
+    "pedidos": 15709,
+    "unidades": 118053,
+    "clientes": 13834,
+    "ticket_medio": 1863.74,
+    "pct_online": 0.5486,
+    "objetivo": 34170900.0
+  }
+}

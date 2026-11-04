@@ -1,0 +1,100 @@
+/// Una fila por día de 2016 a 2025.
+table calendario
+	lineageTag: ca24b4cc-351e-55fa-b047-c8f2c74d0a17
+	dataCategory: Time
+
+	column fecha
+		dataType: dateTime
+		isKey
+		formatString: dd/mm/yyyy
+		lineageTag: 92c94efa-ee6a-5a74-a559-32d46ace91b0
+		summarizeBy: none
+		sourceColumn: fecha
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column anio
+		dataType: int64
+		formatString: 0
+		lineageTag: b92fa3e9-0ac0-5226-9495-7fe20ff9bdf8
+		summarizeBy: none
+		sourceColumn: anio
+
+	column trimestre
+		dataType: string
+		lineageTag: 2a70ba34-d7e5-5028-aa0f-06666be00b7e
+		summarizeBy: none
+		sourceColumn: trimestre
+
+	column anio_trimestre
+		dataType: string
+		lineageTag: 2328e15a-08fd-5d80-834b-1cc26b4c4f5f
+		summarizeBy: none
+		sourceColumn: anio_trimestre
+
+	column mes_num
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 0edbcb30-edd9-542a-b05b-76a430f4a2cd
+		summarizeBy: none
+		sourceColumn: mes_num
+
+	column mes
+		dataType: string
+		lineageTag: 97f96dd4-44cc-5e6b-a3eb-fc69c9b433e7
+		summarizeBy: none
+		sourceColumn: mes
+		sortByColumn: mes_num
+
+	column anio_mes_num
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 95310e27-b88a-54cc-9c03-99cda2723675
+		summarizeBy: none
+		sourceColumn: anio_mes_num
+
+	column anio_mes
+		dataType: string
+		lineageTag: 7b16bbcd-7a35-50e5-8701-8196d81dee20
+		summarizeBy: none
+		sourceColumn: anio_mes
+		sortByColumn: anio_mes_num
+
+	column dia_semana_num
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: cd58be93-e546-5d66-a674-4c213ec902ac
+		summarizeBy: none
+		sourceColumn: dia_semana_num
+
+	column dia_semana
+		dataType: string
+		lineageTag: 03c2f111-d6f8-5077-88c3-9ecf8b0d3a99
+		summarizeBy: none
+		sourceColumn: dia_semana
+		sortByColumn: dia_semana_num
+
+	column tipo_dia
+		dataType: string
+		lineageTag: 2528b2f6-38ef-5367-a94c-aac6472f7571
+		summarizeBy: none
+		sourceColumn: tipo_dia
+
+	partition calendario = m
+		mode: import
+		source =
+				let
+				    Ruta = OrigenDatos & "calendario.csv",
+				    Contenido = if Text.StartsWith(Ruta, "http") then Web.Contents(Ruta) else File.Contents(Ruta),
+				    Origen = Csv.Document(Contenido, [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    SinVacios = Table.TransformColumns(Encabezados, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(SinVacios, {{"fecha", type date}, {"anio", Int64.Type}, {"trimestre", type text}, {"anio_trimestre", type text}, {"mes_num", Int64.Type}, {"mes", type text}, {"anio_mes_num", Int64.Type}, {"anio_mes", type text}, {"dia_semana_num", Int64.Type}, {"dia_semana", type text}, {"tipo_dia", type text}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

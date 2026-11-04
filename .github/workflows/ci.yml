@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: pip install -r requirements.txt
+      - name: Tests del modelo, del informe y de la preparación de datos
+        run: pytest -q
+      - name: Los CSV publicados se regeneran igual desde el dataset original
+        run: |
+          python descargar_datos.py
+          python preparar_datos.py
+          git diff --stat --exit-code powerbi/datos/cifras_control.json

@@ -1,0 +1,22 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-ES
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["ventas", "productos", "categorias", "tiendas", "clientes", "calendario", "objetivos", "OrigenDatos"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table ventas
+ref table productos
+ref table categorias
+ref table tiendas
+ref table clientes
+ref table calendario
+ref table objetivos
+

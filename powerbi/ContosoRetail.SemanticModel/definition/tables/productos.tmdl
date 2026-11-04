@@ -1,0 +1,78 @@
+/// Un producto por fila.
+table productos
+	lineageTag: 327ca6ca-f4a2-5ce9-8fcc-d8b21f3caaad
+
+	column producto_id
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 2bea7395-71fa-5d84-a76e-580c2dadc066
+		summarizeBy: none
+		sourceColumn: producto_id
+
+	column producto
+		dataType: string
+		lineageTag: 10e9ef15-1eda-58d5-a872-8716e114693d
+		summarizeBy: none
+		sourceColumn: producto
+
+	column marca
+		dataType: string
+		lineageTag: 39a91e07-e7cd-586d-8196-61f7e1ce073d
+		summarizeBy: none
+		sourceColumn: marca
+
+	column fabricante
+		dataType: string
+		lineageTag: f0b567d2-df75-5565-b8fa-35f6c2ebe09a
+		summarizeBy: none
+		sourceColumn: fabricante
+
+	column color
+		dataType: string
+		lineageTag: 48f89c50-7e31-5994-9438-4438648fd51e
+		summarizeBy: none
+		sourceColumn: color
+
+	column categoria_id
+		dataType: int64
+		isHidden
+		lineageTag: 0fd90c32-0d5d-50d3-ac2e-2d74c1185037
+		summarizeBy: none
+		sourceColumn: categoria_id
+
+	column subcategoria
+		dataType: string
+		lineageTag: f58686ca-0e31-5311-a1ae-3f7f77455a78
+		summarizeBy: none
+		sourceColumn: subcategoria
+
+	column precio_lista
+		dataType: double
+		formatString: \$#,0.00;-\$#,0.00;\$#,0.00
+		lineageTag: 27ba3c04-5e54-5856-ba5b-357cfbe9de73
+		summarizeBy: none
+		sourceColumn: precio_lista
+
+	column coste_lista
+		dataType: double
+		formatString: \$#,0.00;-\$#,0.00;\$#,0.00
+		lineageTag: 4aa213ed-efa8-5def-9257-4b6ca8f76fa5
+		summarizeBy: none
+		sourceColumn: coste_lista
+
+	partition productos = m
+		mode: import
+		source =
+				let
+				    Ruta = OrigenDatos & "productos.csv",
+				    Contenido = if Text.StartsWith(Ruta, "http") then Web.Contents(Ruta) else File.Contents(Ruta),
+				    Origen = Csv.Document(Contenido, [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    SinVacios = Table.TransformColumns(Encabezados, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(SinVacios, {{"producto_id", Int64.Type}, {"producto", type text}, {"marca", type text}, {"fabricante", type text}, {"color", type text}, {"categoria_id", Int64.Type}, {"subcategoria", type text}, {"precio_lista", type number}, {"coste_lista", type number}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

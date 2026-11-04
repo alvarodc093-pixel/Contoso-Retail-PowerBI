@@ -1,0 +1,5 @@
+expression OrigenDatos = "https://raw.githubusercontent.com/alvarodc093-pixel/Contoso-Retail-PowerBI/main/powerbi/datos/" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 1764c1b3-51d0-5481-8816-463ab34eeb8e
+
+	annotation PBI_ResultType = Text
+

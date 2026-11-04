@@ -1,0 +1,33 @@
+/// Categoría de producto. Une productos y objetivos, que tienen distinto detalle.
+table categorias
+	lineageTag: d2ec742f-abd7-50d5-827c-b4306847fd0c
+
+	column categoria_id
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: d554a683-78a1-527e-b8f9-56a191784bb1
+		summarizeBy: none
+		sourceColumn: categoria_id
+
+	column categoria
+		dataType: string
+		lineageTag: 22f9b421-7b7a-58d3-8aa6-d9a428f28785
+		summarizeBy: none
+		sourceColumn: categoria
+
+	partition categorias = m
+		mode: import
+		source =
+				let
+				    Ruta = OrigenDatos & "categorias.csv",
+				    Contenido = if Text.StartsWith(Ruta, "http") then Web.Contents(Ruta) else File.Contents(Ruta),
+				    Origen = Csv.Document(Contenido, [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    SinVacios = Table.TransformColumns(Encabezados, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(SinVacios, {{"categoria_id", Int64.Type}, {"categoria", type text}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

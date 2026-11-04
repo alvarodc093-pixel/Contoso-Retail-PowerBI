@@ -1,0 +1,75 @@
+tienda_id,tienda,canal,pais,region,apertura,cierre,m2,estado
+10,Tienda AU - Australian Capital Territory,Tienda física,Australia,Australian Capital Territory,2008-01-01,,595,Abierta
+20,Tienda AU - Northern Territory,Tienda física,Australia,Northern Territory,2008-01-12,2016-07-07,665,Cerrada
+30,Tienda AU - South Australia,Tienda física,Australia,South Australia,2012-01-07,2015-08-08,2000,Reformada
+35,Tienda AU - South Australia,Tienda física,Australia,South Australia,2015-12-08,,3000,Abierta
+40,Tienda AU - Tasmania,Tienda física,Australia,Tasmania,2010-01-01,,2000,Abierta
+50,Tienda AU - Victoria,Tienda física,Australia,Victoria,2015-12-09,,2000,Abierta
+60,Tienda AU - Western Australia,Tienda física,Australia,Western Australia,2010-01-01,,2000,Abierta
+70,Tienda CA - New Brunswick,Tienda física,Canada,New Brunswick,2007-05-07,2014-03-09,1105,Reformada
+72,Tienda CA - New Brunswick,Tienda física,Canada,New Brunswick,2015-01-11,2018-02-02,1500,Reformada
+74,Tienda CA - New Brunswick,Tienda física,Canada,New Brunswick,2018-06-02,,3500,Abierta
+80,Tienda CA - Newfoundland and Labrador,Tienda física,Canada,Newfoundland and Labrador,2014-07-02,,2105,Abierta
+90,Tienda CA - Northwest Territories,Tienda física,Canada,Northwest Territories,2005-03-04,,1500,Abierta
+100,Tienda CA - Nunavut,Tienda física,Canada,Nunavut,2015-04-04,,1210,Abierta
+110,Tienda CA - Yukon,Tienda física,Canada,Yukon,2009-06-03,2015-05-05,1210,Cerrada
+120,Tienda FR - Basse-Normandie,Tienda física,France,Basse-Normandie,2012-06-06,,350,Abierta
+130,Tienda FR - Corse,Tienda física,France,Corse,2013-06-07,,245,Abierta
+140,Tienda FR - Franche-Comté,Tienda física,France,Franche-Comté,2009-12-15,,350,Abierta
+150,Tienda FR - La Réunion,Tienda física,France,La Réunion,2015-01-01,,400,Abierta
+160,Tienda FR - Limousin,Tienda física,France,Limousin,2010-06-03,,385,Abierta
+170,Tienda FR - Martinique,Tienda física,France,Martinique,2007-07-08,,350,Abierta
+180,Tienda FR - Mayotte,Tienda física,France,Mayotte,2012-08-08,,310,Abierta
+190,Tienda DE - Berlin,Tienda física,Germany,Berlin,2015-04-04,,1295,Abierta
+200,Tienda DE - Brandenburg,Tienda física,Germany,Brandenburg,2012-12-15,2019-08-08,1715,Cerrada
+210,Tienda DE - Freie Hansestadt Bremen,Tienda física,Germany,Freie Hansestadt Bremen,2018-06-03,,560,Abierta
+220,Tienda DE - Freistaat Thüringen,Tienda física,Germany,Freistaat Thüringen,2008-03-06,,2000,Abierta
+230,Tienda DE - Hamburg,Tienda física,Germany,Hamburg,2010-01-01,,1365,Abierta
+240,Tienda DE - Hessen,Tienda física,Germany,Hessen,2012-12-15,,1855,Abierta
+250,Tienda DE - Mecklenburg-Vorpommern,Tienda física,Germany,Mecklenburg-Vorpommern,2010-01-01,2015-04-04,1610,Reformada
+255,Tienda DE - Mecklenburg-Vorpommern,Tienda física,Germany,Mecklenburg-Vorpommern,2015-08-08,,2800,Abierta
+260,Tienda DE - Saarland,Tienda física,Germany,Saarland,2019-03-05,,350,Abierta
+270,Tienda DE - Sachsen-Anhalt,Tienda física,Germany,Sachsen-Anhalt,2008-08-08,,2000,Abierta
+280,Tienda IT - Caltanissetta,Tienda física,Italy,Caltanissetta,2012-12-15,2017-08-03,1200,Cerrada
+290,Tienda IT - Enna,Tienda física,Italy,Enna,2008-01-01,,1000,Abierta
+300,Tienda IT - Pesaro,Tienda física,Italy,Pesaro,2008-01-12,,2100,Abierta
+310,Tienda NL - Drenthe,Tienda física,Netherlands,Drenthe,2012-01-07,,1085,Abierta
+320,Tienda NL - Flevoland,Tienda física,Netherlands,Flevoland,2010-01-01,,910,Abierta
+330,Tienda NL - Friesland,Tienda física,Netherlands,Friesland,2015-12-09,,1540,Abierta
+340,Tienda NL - Groningen,Tienda física,Netherlands,Groningen,2010-01-01,,1365,Abierta
+350,Tienda NL - Zeeland,Tienda física,Netherlands,Zeeland,2007-05-07,2015-07-06,1225,Cerrada
+360,Tienda GB - Armagh,Tienda física,United Kingdom,Armagh,2014-07-02,,1300,Abierta
+370,Tienda GB - Ayrshire,Tienda física,United Kingdom,Ayrshire,2005-03-04,,2100,Abierta
+380,Tienda GB - Belfast,Tienda física,United Kingdom,Belfast,2015-04-04,,1800,Abierta
+390,Tienda GB - Blaenau Gwent,Tienda física,United Kingdom,Blaenau Gwent,2009-06-03,,2100,Abierta
+400,Tienda GB - Dungannon and South Tyrone,Tienda física,United Kingdom,Dungannon and South Tyrone,2012-06-06,,1300,Abierta
+410,Tienda GB - Fermanagh,Tienda física,United Kingdom,Fermanagh,2013-06-07,2018-09-09,2100,Cerrada
+420,Tienda GB - North Down,Tienda física,United Kingdom,North Down,2009-12-15,,1900,Abierta
+430,Tienda US - Alaska,Tienda física,United States,Alaska,2015-01-01,,1190,Abierta
+440,Tienda US - Arkansas,Tienda física,United States,Arkansas,2010-06-03,,2000,Abierta
+450,Tienda US - Connecticut,Tienda física,United States,Connecticut,2007-07-08,,2000,Abierta
+460,Tienda US - Delaware,Tienda física,United States,Delaware,2012-08-08,2015-03-03,1015,Reformada
+465,Tienda US - Delaware,Tienda física,United States,Delaware,2015-06-06,2019-08-03,1015,Cerrada
+470,Tienda US - Hawaii,Tienda física,United States,Hawaii,2015-04-04,,1120,Abierta
+480,Tienda US - Idaho,Tienda física,United States,Idaho,2012-12-15,,1540,Abierta
+490,Tienda US - Iowa,Tienda física,United States,Iowa,2018-06-03,,2000,Abierta
+500,Tienda US - Kansas,Tienda física,United States,Kansas,2008-03-06,,2000,Abierta
+510,Tienda US - Maine,Tienda física,United States,Maine,2010-01-01,,1295,Abierta
+520,Tienda US - Mississippi,Tienda física,United States,Mississippi,2009-06-03,2015-06-03,2000,Cerrada
+530,Tienda US - Montana,Tienda física,United States,Montana,2012-06-06,,1260,Abierta
+540,Tienda US - Nebraska,Tienda física,United States,Nebraska,2013-06-07,,2000,Abierta
+550,Tienda US - Nevada,Tienda física,United States,Nevada,2009-12-15,,2000,Abierta
+560,Tienda US - New Hampshire,Tienda física,United States,New Hampshire,2015-01-01,,1260,Abierta
+570,Tienda US - New Mexico,Tienda física,United States,New Mexico,2010-06-03,,1645,Abierta
+580,Tienda US - North Dakota,Tienda física,United States,North Dakota,2007-07-08,2015-07-06,1330,Reformada
+585,Tienda US - North Dakota,Tienda física,United States,North Dakota,2015-12-15,,3500,Abierta
+590,Tienda US - Oregon,Tienda física,United States,Oregon,2012-08-08,,2000,Abierta
+600,Tienda US - Rhode Island,Tienda física,United States,Rhode Island,2005-04-04,2013-12-05,1260,Reformada
+605,Tienda US - Rhode Island,Tienda física,United States,Rhode Island,2014-06-03,,1260,Abierta
+610,Tienda US - South Carolina,Tienda física,United States,South Carolina,2012-12-15,,2000,Abierta
+620,Tienda US - South Dakota,Tienda física,United States,South Dakota,2018-06-03,,1120,Abierta
+630,Tienda US - Utah,Tienda física,United States,Utah,2008-03-06,2019-11-03,2000,Abierta
+650,Tienda US - Washington DC,Tienda física,United States,Washington DC,2010-01-01,,1330,Abierta
+660,Tienda US - West Virginia,Tienda física,United States,West Virginia,2012-01-01,,1785,Abierta
+670,Tienda US - Wyoming,Tienda física,United States,Wyoming,2014-01-01,,840,Abierta
+999999,Tienda online,Online,Online,Online,2010-01-01,,,Abierta

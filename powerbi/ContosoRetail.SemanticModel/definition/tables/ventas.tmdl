@@ -1,0 +1,335 @@
+/// Hechos: una fila por línea de pedido. Importes en USD.
+table ventas
+	lineageTag: e7891264-8e02-5140-8225-89cde111eca1
+
+	/// Importe vendido en USD, con descuentos (cantidad x precio neto).
+	measure Ventas =
+			SUMX ( ventas, ventas[cantidad] * ventas[precio_neto] )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 1. Ventas
+		lineageTag: af8b8b7b-b472-521d-8ee6-a3b897a0170f
+
+	/// Coste de los productos vendidos en USD.
+	measure Coste =
+			SUMX ( ventas, ventas[cantidad] * ventas[coste_unitario] )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 1. Ventas
+		lineageTag: db40b514-acfe-5b37-b985-69c6ecdc0c53
+
+	/// Ventas menos coste.
+	measure Margen =
+			[Ventas] - [Coste]
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 1. Ventas
+		lineageTag: ea24acf1-ad8d-5972-b853-aaf0da71e563
+
+	/// Margen bruto sobre ventas.
+	measure 'Margen %' =
+			DIVIDE ( [Margen], [Ventas] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 1. Ventas
+		lineageTag: 17d27b44-63bb-5899-9b9c-b722c02a87cb
+
+	/// Unidades vendidas.
+	measure Unidades =
+			SUM ( ventas[cantidad] )
+		formatString: #,0
+		displayFolder: 1. Ventas
+		lineageTag: 39879757-ef8f-5389-836f-2720b14862ec
+
+	/// Número de pedidos distintos (un pedido tiene varias líneas).
+	measure Pedidos =
+			DISTINCTCOUNT ( ventas[pedido_id] )
+		formatString: #,0
+		displayFolder: 1. Ventas
+		lineageTag: 089d7c23-f780-5bf1-97ac-45594dd6fbf8
+
+	/// Importe medio por pedido.
+	measure 'Ticket medio' =
+			DIVIDE ( [Ventas], [Pedidos] )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 1. Ventas
+		lineageTag: bbea5a2d-7fd2-5a10-9f34-d6b3b565031b
+
+	/// Cuánto se rebaja de media el precio de tarifa.
+	measure 'Descuento medio %' =
+			VAR tarifa = SUMX ( ventas, ventas[cantidad] * ventas[precio_unitario] )
+			RETURN
+			    IF ( NOT ISBLANK ( tarifa ), 1 - DIVIDE ( [Ventas], tarifa ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 1. Ventas
+		lineageTag: 5214cb5c-e76d-55ca-b274-e7e1fbb88fc3
+
+	/// Clientes distintos que compran en el periodo.
+	measure Clientes =
+			DISTINCTCOUNT ( ventas[cliente_id] )
+		formatString: #,0
+		displayFolder: 2. Clientes
+		lineageTag: 10c05869-9302-5b8d-b4cf-9c1a69869a34
+
+	/// Clientes cuya primera compra cae dentro del periodo.
+	measure 'Clientes nuevos' =
+			VAR inicio = MIN ( calendario[fecha] )
+			VAR fin = MAX ( calendario[fecha] )
+			VAR primeras =
+			    ADDCOLUMNS (
+			        VALUES ( ventas[cliente_id] ),
+			        "@primera", CALCULATE ( MIN ( ventas[fecha] ), REMOVEFILTERS ( calendario ) )
+			    )
+			RETURN
+			    COUNTROWS ( FILTER ( primeras, [@primera] >= inicio && [@primera] <= fin ) )
+		formatString: #,0
+		displayFolder: 2. Clientes
+		lineageTag: 537c5d1b-f6d3-5cf4-8ab7-daa60d713158
+
+	/// Parte de los clientes del periodo que compran por primera vez.
+	measure '% clientes nuevos' =
+			DIVIDE ( [Clientes nuevos], [Clientes] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 2. Clientes
+		lineageTag: 82713500-b76a-53f7-b290-cbb58bc4f5a2
+
+	/// Ventas del mismo periodo del año anterior.
+	measure 'Ventas AA' =
+			CALCULATE ( [Ventas], SAMEPERIODLASTYEAR ( calendario[fecha] ) )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 3. Tiempo
+		lineageTag: 9e061cff-70a5-5bad-ac5e-12bd105d9d7f
+
+	/// Diferencia frente al año anterior.
+	measure 'Var vs AA' =
+			IF ( NOT ISBLANK ( [Ventas AA] ), [Ventas] - [Ventas AA] )
+		formatString: +\$#,0;-\$#,0;\$#,0
+		displayFolder: 3. Tiempo
+		lineageTag: 9e412e8d-90f3-5f69-a2fe-64d4ff54a5d8
+
+	/// Crecimiento frente al año anterior.
+	measure 'Var vs AA %' =
+			DIVIDE ( [Var vs AA], [Ventas AA] )
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 3. Tiempo
+		lineageTag: d6d9bbd7-de5e-50ab-9b2a-a34af4741129
+
+	/// Ventas desde el 1 de enero hasta la fecha del contexto.
+	measure 'Ventas acumuladas año' =
+			TOTALYTD ( [Ventas], calendario[fecha] )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 3. Tiempo
+		lineageTag: 95742cc3-53e2-5ff8-8158-ec75637ff694
+
+	/// Lo mismo, un año antes.
+	measure 'Ventas acumuladas año AA' =
+			CALCULATE ( [Ventas acumuladas año], SAMEPERIODLASTYEAR ( calendario[fecha] ) )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 3. Tiempo
+		lineageTag: a2b78cc5-a55e-5f86-ba1f-ea47b19828a0
+
+	/// Media mensual de los últimos 3 meses.
+	measure 'Ventas media móvil 3M' =
+			VAR fin = MAX ( calendario[fecha] )
+			RETURN
+			    DIVIDE (
+			        CALCULATE ( [Ventas], DATESINPERIOD ( calendario[fecha], fin, -3, MONTH ) ),
+			        3
+			    )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 3. Tiempo
+		lineageTag: dd1575d1-b577-5dd9-b606-63a942ba0342
+
+	/// Margen % del año anterior.
+	measure 'Margen % AA' =
+			CALCULATE ( [Margen %], SAMEPERIODLASTYEAR ( calendario[fecha] ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 3. Tiempo
+		lineageTag: 40bdf5b2-cfef-58ce-a142-f0d3319a4b00
+
+	/// Ventas de la tienda online.
+	measure 'Ventas online' =
+			CALCULATE ( [Ventas], tiendas[canal] = "Online" )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 4. Canales
+		lineageTag: 46b2ce08-a6c8-5ee1-aab4-7b3debcb21a2
+
+	/// Peso de la tienda online en las ventas.
+	measure '% online' =
+			DIVIDE ( [Ventas online], [Ventas] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 4. Canales
+		lineageTag: 424e3c25-5dd2-5a5f-b9ee-0caeaa233b79
+
+	/// Ventas de las tiendas físicas.
+	measure 'Ventas tiendas físicas' =
+			CALCULATE ( [Ventas], tiendas[canal] = "Tienda física" )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 4. Canales
+		lineageTag: 3d66863a-8872-5d23-ba68-772625bf2ae0
+
+	/// Ventas de tienda física entre los m² de las tiendas que han vendido en el periodo.
+	measure 'Ventas por m²' =
+			VAR tiendasConVentas =
+			    FILTER ( VALUES ( tiendas[tienda_id] ), [Ventas tiendas físicas] > 0 )
+			VAR superficie =
+			    SUMX ( tiendasConVentas, CALCULATE ( SUM ( tiendas[m2] ) ) )
+			RETURN
+			    DIVIDE ( [Ventas tiendas físicas], superficie )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 4. Canales
+		lineageTag: faadadf8-cd61-5f6c-8a8b-a9a2bb6741cd
+
+	/// Puesto de la categoría por ventas dentro de la selección.
+	measure 'Ranking categoría' =
+			IF (
+			    HASONEVALUE ( categorias[categoria] ),
+			    RANKX ( ALLSELECTED ( categorias[categoria] ), [Ventas] )
+			)
+		formatString: #,0
+		displayFolder: 1. Ventas
+		lineageTag: e7a977dd-092b-51ee-95f3-a2700b29d8ed
+
+	/// Presupuesto de ventas: mismo mes del año anterior + 8 %.
+	measure Objetivo =
+			SUM ( objetivos[objetivo] )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 5. Objetivos
+		lineageTag: 397b5f16-21dd-5b1c-9ad5-c7b645b0254b
+
+	/// Ventas menos objetivo.
+	measure 'Desviación vs objetivo' =
+			IF ( NOT ISBLANK ( [Objetivo] ), [Ventas] - [Objetivo] )
+		formatString: +\$#,0;-\$#,0;\$#,0
+		displayFolder: 5. Objetivos
+		lineageTag: e22e61a9-4dee-55d4-aff2-f4cd8b2c644d
+
+	/// Ventas sobre objetivo (100 % = objetivo cumplido).
+	measure 'Cumplimiento %' =
+			DIVIDE ( [Ventas], [Objetivo] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 5. Objetivos
+		lineageTag: 26d8b64c-2ddf-51a2-bee2-d6e55ba0cf27
+
+	/// Objetivo desde el 1 de enero.
+	measure 'Objetivo acumulado año' =
+			TOTALYTD ( [Objetivo], calendario[fecha] )
+		formatString: \$#,0;-\$#,0;\$#,0
+		displayFolder: 5. Objetivos
+		lineageTag: b0e14b75-9c86-529f-bcee-71fb5a0e0d1c
+
+	/// Semáforo de cumplimiento en texto.
+	measure 'Estado objetivo' =
+			VAR c = [Cumplimiento %]
+			RETURN
+			    SWITCH (
+			        TRUE (),
+			        ISBLANK ( c ), BLANK (),
+			        c >= 1, "Cumplido",
+			        c >= 0.9, "Cerca (90-100 %)",
+			        "Por debajo del 90 %"
+			    )
+		displayFolder: 5. Objetivos
+		lineageTag: dc47b0a7-8829-5210-b6da-b355fd67c444
+
+	column pedido_id
+		dataType: int64
+		isHidden
+		lineageTag: b6cd3c6c-0b66-599b-8646-eac1015ed923
+		summarizeBy: none
+		sourceColumn: pedido_id
+
+	column linea
+		dataType: int64
+		isHidden
+		lineageTag: a1e9d77d-3893-5ee9-a475-3fa9ec1c61aa
+		summarizeBy: none
+		sourceColumn: linea
+
+	column fecha
+		dataType: dateTime
+		isHidden
+		formatString: dd/mm/yyyy
+		lineageTag: c5aa85ad-789e-520a-aad1-4b33fa555ece
+		summarizeBy: none
+		sourceColumn: fecha
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column dias_entrega
+		dataType: int64
+		formatString: #,0
+		lineageTag: af3615f8-d6dc-5f8e-b178-bd9e5674d8bc
+		summarizeBy: average
+		sourceColumn: dias_entrega
+
+	column cliente_id
+		dataType: int64
+		isHidden
+		lineageTag: 99dc34e6-1527-58e1-9992-5cad225d19a3
+		summarizeBy: none
+		sourceColumn: cliente_id
+
+	column tienda_id
+		dataType: int64
+		isHidden
+		lineageTag: a0917657-b902-53fe-87fe-f1c4f718441b
+		summarizeBy: none
+		sourceColumn: tienda_id
+
+	column producto_id
+		dataType: int64
+		isHidden
+		lineageTag: d480d357-beca-5ac4-af9c-58896a48a5f6
+		summarizeBy: none
+		sourceColumn: producto_id
+
+	column cantidad
+		dataType: int64
+		isHidden
+		formatString: #,0
+		lineageTag: 3d05f0f5-f97d-5d63-af41-59d44c415f05
+		summarizeBy: sum
+		sourceColumn: cantidad
+
+	column precio_unitario
+		dataType: double
+		isHidden
+		formatString: \$#,0.00;-\$#,0.00;\$#,0.00
+		lineageTag: 6f1eeb8b-cfd2-5204-971c-0e75c1fc1943
+		summarizeBy: none
+		sourceColumn: precio_unitario
+
+	column precio_neto
+		dataType: double
+		isHidden
+		formatString: \$#,0.00;-\$#,0.00;\$#,0.00
+		lineageTag: 2535e97a-6111-55c7-b144-e241cbf229cd
+		summarizeBy: none
+		sourceColumn: precio_neto
+
+	column coste_unitario
+		dataType: double
+		isHidden
+		formatString: \$#,0.00;-\$#,0.00;\$#,0.00
+		lineageTag: c9ecb333-def9-595d-ae55-6ab0b2247638
+		summarizeBy: none
+		sourceColumn: coste_unitario
+
+	column moneda
+		dataType: string
+		lineageTag: 4ccc9d79-5693-5f55-ae99-ba177618a909
+		summarizeBy: none
+		sourceColumn: moneda
+
+	partition ventas = m
+		mode: import
+		source =
+				let
+				    Ruta = OrigenDatos & "ventas.csv",
+				    Contenido = if Text.StartsWith(Ruta, "http") then Web.Contents(Ruta) else File.Contents(Ruta),
+				    Origen = Csv.Document(Contenido, [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    SinVacios = Table.TransformColumns(Encabezados, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(SinVacios, {{"pedido_id", Int64.Type}, {"linea", Int64.Type}, {"fecha", type date}, {"dias_entrega", Int64.Type}, {"cliente_id", Int64.Type}, {"tienda_id", Int64.Type}, {"producto_id", Int64.Type}, {"cantidad", Int64.Type}, {"precio_unitario", type number}, {"precio_neto", type number}, {"coste_unitario", type number}, {"moneda", type text}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

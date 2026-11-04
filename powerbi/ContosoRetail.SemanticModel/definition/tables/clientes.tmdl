@@ -1,0 +1,51 @@
+/// Clientes que han comprado, sin datos personales.
+table clientes
+	lineageTag: 080f8090-d8da-518a-95f9-1aeeff24247f
+
+	column cliente_id
+		dataType: int64
+		isHidden
+		isKey
+		lineageTag: 61b8802b-f238-5f42-b183-cccd717e4e67
+		summarizeBy: none
+		sourceColumn: cliente_id
+
+	column pais
+		dataType: string
+		lineageTag: 47426741-be21-58db-b54d-f435f81617fe
+		summarizeBy: none
+		sourceColumn: pais
+
+	column continente
+		dataType: string
+		lineageTag: 48480694-19d2-5188-88c1-8607429310ca
+		summarizeBy: none
+		sourceColumn: continente
+
+	column genero
+		dataType: string
+		lineageTag: 60072899-889f-5638-9be5-6c6c94a0ba6b
+		summarizeBy: none
+		sourceColumn: genero
+
+	column grupo_edad
+		dataType: string
+		lineageTag: f1bcd479-f9e1-5b61-8677-34a84c5b64f4
+		summarizeBy: none
+		sourceColumn: grupo_edad
+
+	partition clientes = m
+		mode: import
+		source =
+				let
+				    Ruta = OrigenDatos & "clientes.csv",
+				    Contenido = if Text.StartsWith(Ruta, "http") then Web.Contents(Ruta) else File.Contents(Ruta),
+				    Origen = Csv.Document(Contenido, [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Encabezados = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				    SinVacios = Table.TransformColumns(Encabezados, {}, each if _ = "" then null else _),
+				    Tipos = Table.TransformColumnTypes(SinVacios, {{"cliente_id", Int64.Type}, {"pais", type text}, {"continente", type text}, {"genero", type text}, {"grupo_edad", type text}}, "en-US")
+				in
+				    Tipos
+
+	annotation PBI_ResultType = Table
+

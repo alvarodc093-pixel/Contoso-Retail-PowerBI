@@ -1,0 +1,28 @@
+relationship 7491251c-5990-509f-b8f6-c21f747d63db
+	fromColumn: ventas.fecha
+	toColumn: calendario.fecha
+
+relationship 280f2524-d18b-5aab-aa7d-e81eb4a94e17
+	fromColumn: ventas.producto_id
+	toColumn: productos.producto_id
+
+relationship e41ed855-d698-5fb1-9c66-0d6139f75f59
+	fromColumn: ventas.tienda_id
+	toColumn: tiendas.tienda_id
+
+relationship 4a40a843-78b6-5c68-a2e3-5581e198476a
+	fromColumn: ventas.cliente_id
+	toColumn: clientes.cliente_id
+
+relationship 6b63656a-39e0-5e63-aef0-ea3efd0f2d80
+	fromColumn: productos.categoria_id
+	toColumn: categorias.categoria_id
+
+relationship cc69c17e-b672-5b4f-ad9f-6152c045f6af
+	fromColumn: objetivos.fecha
+	toColumn: calendario.fecha
+
+relationship e9d7580e-f6cc-5158-8280-11e898d684f2
+	fromColumn: objetivos.categoria_id
+	toColumn: categorias.categoria_id
+
